@@ -96,6 +96,11 @@ export function parse(text: string, options?: ParseOptions): TxtParentNode {
         if (node.type === ASTNodeTypes.Comment) {
           node.value = node.raw
           delete node.children
+	} else if (node.original_type === "literal") {
+	  // literalノードは構造的にchildrenにコードが収まるので、引っ張り出す。
+	  // commentと同様に、 childrenは不要とする
+          node.value = node.children[0].text
+          delete node.children
         } else {
           delete node.value
         }
